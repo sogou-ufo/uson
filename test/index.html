@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Test for Uson</title>
+    </head>
+    <body>
+        <h3>Test1</h3> 
+        <div id="Test1" data-uson="Hot">
+            <ul >
+                <script type="text/uson" >
+                    {% for user in users %}
+                    <li>{{ user.name }}</li>
+                    {% endfor %}
+                </script>
+            </ul>
+        </div>
+        <h3>Test2</h3>
+        <div id="Test2" data-uson="New" , data-uson-data='{"name":"demix"}'>
+            <script type="text/uson" >
+                hello {{ name }} !
+            </script>
+        </div>
+        <h3>Test3</h3>
+    
+        <div id="Test3" data-uson="Low" , data-uson-url='test3.json'>
+            <script type="text/uson" >
+                {% for idx in data %}
+                {{ idx }} + 
+                {% endfor %}
+            </script>
+        </div>
+    </body>
+    <script type="text/javascript" src="../3rd/zepto.min.js"></script>
+    <script type="text/javascript" src="../3rd/Ursa.js"></script>
+    <script type="text/javascript" src="../src/uson.js"></script>
+    <script type="text/javascript">
+        Uson.create('Hot' , {
+            url:'test.json',
+            query:function(){
+                return {
+                    test : 1
+                }
+            },
+            dataProcessor: function(data){
+                data.users.push({
+                    name:'robot'
+                });
+                return data;
+            },
+            done: function(el){
+                el.css('background' , '#888');
+            }
+        });
+
+        Uson.init();
+
+        
+    </script>
+</html>
