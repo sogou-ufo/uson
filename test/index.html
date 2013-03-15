@@ -25,9 +25,7 @@
     
         <div id="Test3" data-uson="Low" , data-uson-url='test3.json'>
             <script type="text/uson" >
-                {% for idx in data %}
-                {{ idx }} + 
-                {% endfor %}
+                {{ item }} + {{ idx }}  <br/>
             </script>
         </div>
     </body>
@@ -53,7 +51,13 @@
             }
         });
 
-        Uson.init();
+        Uson.search();
+        var test3 = Uson.get('Low');
+        test3.dataProcessor = function(data){
+        data.unshift('inject');
+        return data;
+        };
+        Uson.render();
 
         
     </script>

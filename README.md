@@ -31,6 +31,16 @@ options参数如下
 参数
 * wrapper : selector|htmlelement  容器id或者jqeury对象，不填则为document.body
 
+### Uson.search
+
+搜索页面内所有moduls
+
+### Uson.get
+
+返回uson实例
+
+参数
+* name : string  module的名称
 
 ## 使用指南
 
@@ -41,6 +51,8 @@ options参数如下
 在容器外层添加 `data-uson` 属性，值为唯一的名称
 
 容器内使用 type 为 text/uson 的script标签，内嵌 ursa-js 模版
+
+如果数据为数组，模版只需列出单项，系统将自动拼接。数组内两变量，item为单个数据，idx为当前循环值，从0开始。
 
 ### 模版渲染
 

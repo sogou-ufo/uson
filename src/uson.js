@@ -50,7 +50,18 @@
             if( tpl.length ){
                 tpl = tpl[0].innerHTML;
                 this.tpl = Ursa.compile(tpl);
-                this.target.html(this.tpl(this.data));
+                if( $.isArray(this.data) ){
+                    var html = '';
+                    this.data.forEach(function(item,idx){
+                        html += this.tpl({
+                            item:item,
+                            idx:idx
+                        });
+                    }.bind(this));
+                    this.target.html(html);
+                }else{
+                    this.target.html(this.tpl(this.data));
+                }
                 this.done(this.target);
             }
         }
@@ -59,11 +70,13 @@
     
     var Uson = {
         /**
-         * 初始化uson所有模块
+         * 渲染uson所有模块
          *
          * @param wrapper Selector|HTMLElement
          */
-        init: function(wrapper){
+        render: function(wrapper){
+            if( !this._searched )
+                this.search();
             wrapper = $(wrapper).length? $(wrapper) : $(document.body);
             var els = wrapper.find('*[data-uson]');
             els.forEach(function(el, idx){
@@ -71,19 +84,32 @@
                 var insName = el.data('uson');
                 if( Uson.modules[insName] ){
                     Uson.modules[insName].render($(el));
+                }
+            });
+        },
+        get: function(name){
+            return Uson.modules[name] || null;
+        },
+        search: function(){
+            var els = $(document.body).find('*[data-uson]');
+            els.forEach(function(el,idx){
+                el = $(el);
+                var insName = el.data('uson');
+                if( Uson.modules[insName] ){
+                    return;
                 }else if( el.data('uson-data') && typeof el.data('uson-data') == 'object' ){
                     Uson.modules[insName] = new UsonInstance(insName , {
                         data:el.data('uson-data')
                     });
-                    Uson.modules[insName].render($(el));
-                    
                 }else if(el.data('uson-url') ){
                     Uson.modules[insName] = new UsonInstance( insName, {
                         url:el.data('uson-url')
                     });
-                    Uson.modules[insName].render($(el));
                 }
             });
+
+            this._searched = true;
+            return this;
         },
 
         modules: {},
