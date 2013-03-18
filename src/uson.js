@@ -55,7 +55,15 @@
                     this.data.forEach(function(item,idx){
                         html += this.tpl({
                             item:item,
-                            idx:idx
+                            loop:{
+                                index:+idx+1,
+                                index0:+idx,
+                                revindex:this.data.length-idx,
+                                revindex0:this.data.length-idx-1,
+                                first:(idx==0),
+                                last:( idx==this.data.length-1 ),
+                                length:this.data.length
+                            }
                         });
                     }.bind(this));
                     this.target.html(html);
