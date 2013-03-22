@@ -25,9 +25,17 @@
     
         <div id="Test3" data-uson="Low" , data-uson-url='test3.json'>
             <script type="text/uson" >
-                {{ item }} + {{ idx }}  <br/>
+                {{ item }} + {{ loop.index }}  <br/>
             </script>
         </div>
+
+        <h3>Test4</h3>
+        <div id="Test4" data-uson="Query">
+            <script type="text/uson">
+                {{name}}
+            </script>
+        </div>
+        <p onclick="Uson.render('#Test4')" style="text-decoration:underline;cursor:pointer;">rerender</p>
     </body>
     <script type="text/javascript" src="../3rd/zepto.min.js"></script>
     <script type="text/javascript" src="../3rd/Ursa.js"></script>
@@ -35,11 +43,6 @@
     <script type="text/javascript">
         Uson.create('Hot' , {
             url:'test.json',
-            query:function(){
-                return {
-                    test : 1
-                }
-            },
             dataProcessor: function(data){
                 data.users.push({
                     name:'robot'
@@ -51,11 +54,18 @@
             }
         });
 
+        Uson.create('Query' , {
+            query:function(){
+                return {name:['demix','xin' , 'sogou'][Math.floor(Math.random()*3)]}
+            },
+            url:'test.php'
+        });
+
         Uson.search();
         var test3 = Uson.get('Low');
         test3.dataProcessor = function(data){
-        data.unshift('inject');
-        return data;
+            data.unshift('inject');
+            return data;
         };
         Uson.render();
 
