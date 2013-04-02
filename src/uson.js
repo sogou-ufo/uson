@@ -63,9 +63,17 @@
             this.target = $el;
             if( !this.getQueryData()  && ( !this.data && this.url) ){
                 var now = this;
+                var querydata = typeof this.query == 'function'? this.query() : this.query;
+                if( typeof querydata == 'string' ){
+                    querydata += '&tm=' + (+new Date());
+                }else if( querydata && typeof querydata =='object' ){
+                    querydata.tm = +new Date();
+                }else if( !querydata ){
+                    querydata = '&tm=' + (+new Date());
+                }
                 $.ajax({
                     url: this.url,
-                    data: typeof this.query == 'function'? this.query() : this.query,
+                    data: querydata,
                     success: function(data){
                         if( typeof data == 'string' ){
                             data = JSON.parse(data);
